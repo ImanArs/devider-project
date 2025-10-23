@@ -58,9 +58,9 @@ export const useDeviderLogic = () => {
       ]);
     }
 
+    setStepIndex(stepIndex + 1);
     setRightAns("");
     setLeftAns("");
-    setStepIndex(stepIndex + 1);
   };
 
   const submitDrop = (val: string) => {
@@ -90,9 +90,9 @@ export const useDeviderLogic = () => {
       return next;
     });
 
-    setActiveCols((c) => c + 1);
-    setLeftAns("");
+    setActiveCols(activeCols + 1);
     setStepIndex(stepIndex + 1);
+    setLeftAns("");
   };
 
   const closeOverlay = () => setShowOverlay(false);

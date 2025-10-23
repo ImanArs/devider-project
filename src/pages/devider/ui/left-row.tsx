@@ -71,13 +71,17 @@ export const LeftRowNumbers: React.FC<Props> = ({
                 <Cell className="p-0">
                   <input
                     ref={inputRef}
-                    className="w-full h-full bg-transparent outline-none text-center"
+                    className={`w-full h-full bg-transparent outline-none text-center ${
+                      leftAns && leftAns !== dropDigit ? 'text-red-400' : 'text-white'
+                    }`}
                     inputMode="numeric"
                     maxLength={1}
                     placeholder={dropDigit}
                     value={leftAns}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, "").slice(0, 1);
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 1);
                       setLeftAns(value);
                       if (value === dropDigit) submitDrop(value);
                     }}
@@ -130,12 +134,19 @@ export const LeftRowNumbers: React.FC<Props> = ({
               }
             >
               {expect.length > 1 ? (
-                <OtpInput length={expect.length} onComplete={submitCommon} />
+                <OtpInput
+                  key={`left-${current?.D1}-${expect}`}
+                  length={expect.length}
+                  expected={expect}
+                  onComplete={submitCommon}
+                />
               ) : (
                 <Cell className="p-0">
                   <input
                     ref={inputRef}
-                    className="w-full h-full bg-transparent outline-none text-center"
+                    className={`w-full h-full bg-transparent outline-none text-center ${
+                      leftAns && leftAns !== expect ? 'text-red-400' : 'text-white'
+                    }`}
                     inputMode="numeric"
                     placeholder={expect}
                     value={leftAns}

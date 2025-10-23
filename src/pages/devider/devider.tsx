@@ -125,7 +125,11 @@ export const DeviderPage = () => {
                               <Cell className="p-0">
                                 <input
                                   ref={inputRef}
-                                  className="w-full h-full bg-transparent outline-none text-center"
+                                  className={`w-full h-full bg-transparent outline-none text-center ${
+                                    leftAns && leftAns !== dropDigit
+                                      ? "text-red-400"
+                                      : "text-white"
+                                  }`}
                                   inputMode="numeric"
                                   maxLength={1}
                                   placeholder={dropDigit}
@@ -160,8 +164,8 @@ export const DeviderPage = () => {
             </div>
           </div>
 
-          <div className="border-l-2 pl-2 flex flex-col gap-2">
-            <div className="flex gap-1 border-b-2 pb-2">
+          <div className="border-l-2 flex flex-col gap-2">
+            <div className="flex gap-1 pl-2">
               {String(numbers[1])
                 .split("")
                 .map((digit, index) => (
@@ -169,7 +173,7 @@ export const DeviderPage = () => {
                 ))}
             </div>
 
-            <div className="flex gap-1">
+            <div className="flex gap-1 pl-2 border-t-2 pt-2">
               {quotient.map((digit, index) => (
                 <Cell key={`result-${index}`}>{digit}</Cell>
               ))}
@@ -189,7 +193,11 @@ export const DeviderPage = () => {
                     <Cell className="p-0">
                       <input
                         ref={inputRef}
-                        className="w-full h-full bg-transparent outline-none"
+                        className={`w-full h-full bg-transparent outline-none ${
+                          rightAns && rightAns !== expect
+                            ? "text-red-400"
+                            : "text-white"
+                        }`}
                         inputMode="numeric"
                         placeholder={expect}
                         value={rightAns}

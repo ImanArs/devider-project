@@ -7,6 +7,8 @@ interface OtpInputProps {
   onComplete: (value: string) => void;
   className?: string;
   autoFocus?: boolean;
+  /** ожидаемое значение для валидации (если нужно подсветить ошибку) */
+  expected?: string;
 }
 
 export function OtpInput({
@@ -14,15 +16,18 @@ export function OtpInput({
   onComplete,
   className,
   autoFocus = true,
+  expected,
 }: OtpInputProps) {
   const safeLen = Math.max(1, Math.floor(length));
   const [values, setValues] = useState<string[]>(() =>
     Array.from({ length: safeLen }, () => "")
   );
+  const [isError, setIsError] = useState(false);
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
     setValues(Array.from({ length: safeLen }, () => ""));
+    setIsError(false);
   }, [safeLen]);
 
   useEffect(() => {
@@ -36,9 +41,15 @@ export function OtpInput({
 
   useEffect(() => {
     if (join.length === safeLen) {
-      onComplete(join);
+      if (expected && join !== expected) {
+        setIsError(true);
+        setTimeout(() => setIsError(false), 500);
+        setValues(Array.from({ length: safeLen }, () => ""));
+      } else {
+        onComplete(join);
+      }
     }
-  }, [join, safeLen, onComplete]);
+  }, [join, safeLen, onComplete, expected]);
 
   const setAt = (i: number, val: string) => {
     setValues((prev) => prev.map((v, idx) => (idx === i ? val : v)));
@@ -95,14 +106,29 @@ export function OtpInput({
   };
 
   return (
-    <div className={cn("flex gap-1 rounded-md", className)}>
+    <div
+      className={cn(
+        "flex gap-1 rounded-md transition-colors",
+        isError && "text-red-500",
+        className
+      )}
+    >
       {Array.from({ length: safeLen }).map((_, i) => (
-        <Cell key={i} className="p-0">
+        <Cell
+          key={i}
+          className={cn(
+            "p-0 transition-colors",
+            isError && "border-red-500 text-red-500"
+          )}
+        >
           <input
             ref={(el) => {
               inputsRef.current[i] = el;
             }}
-            className="w-[2.5ch] text-center bg-transparent outline-none px-2 py-2"
+            className={cn(
+              "w-full text-center bg-transparent outline-none",
+              isError && "text-red-500 placeholder-red-500"
+            )}
             value={values[i]}
             inputMode="numeric"
             onChange={(e) => handleChange(i, e.target.value)}
