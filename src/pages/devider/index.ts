@@ -1,0 +1,1 @@
+export { DeviderPage } from "./devider";
