@@ -1,11 +1,5 @@
-import { DeviderPage } from "@/pages/devider";
-
 function App() {
-  return (
-    <div className="">
-      <DeviderPage />
-    </div>
-  );
+  return <div className="">just test</div>;
 }
 
 export default App;
